@@ -1,0 +1,27 @@
+{
+  "name": "dsh-balance-card",
+  "version": "0.1.0",
+  "private": true,
+  "description": "侧边栏卡片：DeepSeek 余额、近日消耗、峰谷时段与倒计时",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md"
+  ]
+}

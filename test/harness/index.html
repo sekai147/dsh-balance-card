@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>dsh-balance-card 预览</title>
+<style>
+  /* 只有这些 --dsw-* 变量是 DSH 主题提供的；卡片内部不写死颜色。 */
+  :root {
+    --dsw-alias-bg-layer-1: #23242a;
+    --dsw-alias-bg-layer-2: #1b1c20;
+    --dsw-alias-border-l1: #2a2b31;
+    --dsw-alias-border-l3: #34353c;
+    --dsw-alias-label-primary: #e9eaee;
+    --dsw-alias-label-secondary: #a6a8b0;
+    --dsw-alias-label-tertiary: #71737b;
+    --dsw-alias-state-warn-primary: #f0a020;
+    --dsw-alias-state-success-primary: #3ec97a;
+    --dsw-alias-state-error-primary: #ef5350;
+    --app-bg: #15161a;
+    --sidebar-bg: #1a1b1f;
+  }
+  /* 浅色主题：卡片只用 --dsw-* 变量，所以换一套变量就能验证对比度 */
+  body[data-theme="light"] {
+    --dsw-alias-bg-layer-1: #ffffff;
+    --dsw-alias-bg-layer-2: #f6f7f9;
+    --dsw-alias-border-l1: #e7e8ec;
+    --dsw-alias-border-l3: #d8dae0;
+    --dsw-alias-label-primary: #1c1d21;
+    --dsw-alias-label-secondary: #565861;
+    --dsw-alias-label-tertiary: #8b8d96;
+    --dsw-alias-state-warn-primary: #b26a00;
+    --dsw-alias-state-success-primary: #12864a;
+    --dsw-alias-state-error-primary: #c62828;
+    --app-bg: #eef0f4;
+    --sidebar-bg: #f7f8fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--app-bg);
+    color: var(--dsw-alias-label-primary);
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .stage { display: flex; align-items: stretch; gap: 18px; padding: 16px; min-height: 100vh; }
+
+  /* 侧边栏本体：宽度、内边距、底部结构都按 DSH 真实的左栏复刻 */
+  .sidebar {
+    width: 248px; flex: 0 0 auto; background: var(--sidebar-bg);
+    border: 1px solid var(--dsw-alias-border-l1); border-radius: 12px;
+    display: flex; flex-direction: column; padding: 10px 8px 8px; gap: 8px;
+  }
+  .sidebar.collapsed { width: 56px; padding: 8px 6px; }
+  .brand { display: flex; align-items: center; gap: 8px; padding: 2px 4px 8px; }
+  .brand-dot { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(140deg, #4d6bfe, #8b5cf6); }
+  .brand-name { font-size: 12.5px; color: var(--dsw-alias-label-secondary); }
+  .spacer { flex: 1 1 auto; }
+  .panel {
+    border: 1px solid var(--dsw-alias-border-l1); border-radius: 8px;
+    background: var(--dsw-alias-bg-layer-2); padding: 7px 9px;
+    font-size: 11px; color: var(--dsw-alias-label-tertiary);
+  }
+  /* 真实左栏就是这样两个盒子：footerActions 在上，settingsArea 在下 */
+  .footerActions { display: flex; align-items: stretch; }
+  .settingsArea { display: flex; }
+  .settings-row {
+    flex: 1 1 auto; display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; color: var(--dsw-alias-label-secondary);
+    padding: 5px 6px; border-radius: 7px;
+  }
+  .gear { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid currentColor; opacity: .75; }
+  .collapsed .settings-row { justify-content: center; }
+
+  /* 右侧说明区：只为这张预览图服务，不是插件的一部分 */
+  .meta { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 4px 2px; }
+  .meta h1 { font-size: 13px; font-weight: 600; margin: 0; color: var(--dsw-alias-label-secondary); letter-spacing: .02em; }
+  .meta .hint { font-size: 11px; line-height: 17px; color: var(--dsw-alias-label-tertiary); margin: 0; }
+  .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+  .swatch {
+    font-size: 11px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+    border: 1px solid var(--dsw-alias-border-l3); color: var(--dsw-alias-label-secondary);
+  }
+  .swatch[data-active="1"] { border-color: var(--dsw-alias-state-success-primary); color: var(--dsw-alias-state-success-primary); }
+  pre {
+    margin: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--dsw-alias-border-l1);
+    background: var(--dsw-alias-bg-layer-2); color: var(--dsw-alias-label-secondary);
+    font: 11px/16px "Cascadia Mono", Consolas, monospace; max-height: 300px; overflow: auto;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  #error { color: var(--dsw-alias-state-error-primary); font-size: 11px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-dot"></div><div class="brand-name">DeepSeek Harness</div></div>
+    <div class="panel">工作区 / 会话列表（示意）</div>
+    <div class="spacer"></div>
+    <div class="footerActions" id="footer-actions"><!-- 卡片挂这里 --></div>
+    <div class="settingsArea">
+      <div class="settings-row"><span class="gear"></span><span id="settings-label">设置</span></div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <h1 id="caption">dsh-balance-card · 侧边栏预览</h1>
+    <p class="hint">
+      左边是 DSH 左侧边栏的底部结构：<code>footerActions</code> 里放卡片，下面是设置入口。<br />
+      卡片宽 = 侧栏宽，点一下展开近 7 日明细。
+    </p>
+    <div class="swatches" id="swatches"></div>
+    <pre id="raw">等待数据…</pre>
+    <div id="error"></div>
+  </div>
+</div>
+
+<script src="/harness/shim.js"></script>
+<script>
+  /* 插件脚本一加载就会调 __ModuleLoader__.load，所以这个壳必须先于 /lib/client.js 存在。 */
+  window.__pendingMods = [];
+  window.__ModuleLoader__ = { load: function (mod) { window.__pendingMods.push(mod); } };
+</script>
+<script src="/lib/client.js"></script>
+<script src="/harness/boot.js"></script>
+</body>
+</html>

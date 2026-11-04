@@ -1,0 +1,8 @@
+# dsh-balance-card bundle patch.
+#
+# 一行两半边：`exports["."]`（lib/index.js）在宿主进程里跑，注册
+# `/api/dsh-balance` 路由；`exports["./client"]`（lib/client.js）在浏览器里跑，
+# 往 `sidebar.footer.action` 槽位插一张卡片。两半边同名同 id，靠这一行一起挂载。
+- insert:
+    - id: dsh-balance-card
+      name: dsh-balance-card
